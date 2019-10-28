@@ -10,9 +10,10 @@ const prostateExamSchema = new Schema({
     dimensoes: Boolean,
     esteatotico: Boolean,
     cisto: Boolean,
-    tamanhoCisto: Number
-
+    tamanhoCisto: Number,
+    pacient:{type: Schema.Types.ObjectId,ref: 'pacients'},
+    pacientName:String
 }, {timestamps: true});
 
-const prostateExam = mongoose.model("prostateExams", prostateExamSchema);
-module.exports = prostateExam;
+const ProstateExam = mongoose.model("prostateExams", prostateExamSchema);
+module.exports = ProstateExam;

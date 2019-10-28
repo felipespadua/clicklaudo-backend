@@ -10,9 +10,10 @@ const liverExamSchema = new Schema({
     dimensoes: Boolean,
     esteatotico: Boolean,
     cisto: Boolean,
-    tamanhoCisto: Number
-
+    tamanhoCisto: Number,
+    pacient:{type: Schema.Types.ObjectId},
+    pacientName:String,
 }, {timestamps: true});
 
-const liverExam = mongoose.model("LiverExams", liverExamSchema);
-module.exports = liverExam;
+const LiverExam = mongoose.model("liverExams", liverExamSchema);
+module.exports = LiverExam;

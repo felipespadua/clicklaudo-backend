@@ -3,15 +3,15 @@ const Schema   = mongoose.Schema;
 
 const pacientSchema = new Schema({
   sex: String,
-  Name: String,
-  Age: Number,
-  Phone: Number,
+  name: String,
+  age: Number,
+  phone: Number,
   healthPlan: String,
-  Email: String,
-  Weight: Number,
-  Height: Number,
-  BodySurface: Number
-  
+  email: String,
+  weight: Number,
+  height: Number,
+  bodySurface: Number,
+  exams:{ type: Schema.Types.ObjectId, ref: 'allexams' }
 
 
   
@@ -19,5 +19,5 @@ const pacientSchema = new Schema({
   timestamps: true
 });
 
-const Pacient = mongoose.model("Pacient", pacientSchema);
+const Pacient = mongoose.model("pacients", pacientSchema);
 module.exports = Pacient;
