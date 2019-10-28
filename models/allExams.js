@@ -1,7 +1,8 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 autoIncrement = require('mongoose-auto-increment');
-var connection = mongoose.createConnection("mongodb://localhost/clicklaudo-back");
+var connection = mongoose.createConnection(process.env.MONGODB_URI);
 autoIncrement.initialize(connection);
 const allExamsSchema = new Schema({
   exam: {
