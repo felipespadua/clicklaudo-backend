@@ -110,8 +110,9 @@ const request = {
         languageCode: languageCode,
         profanityFilter: false,
         enableWordTimeOffsets: true,
+        maxAlternatives: 3,
         speechContexts: [{
-            phrases: ["deformações","laudo","imperfeição","gpc","BTJ","ATJ"]
+            phrases: ["c1","c2","C3","C4","homogeneo","homogêneo","esteatotico","esteatótico","calcificação", "calcificação grosseira", "grosseira", "cisco","cisco simples","vários ciscos","varios ciscos","laudo","imperfeição","gpc","BTJ","ATJ"]
            }] // add your own speech context for better recognition
     },
     interimResults: true // If you want interim results, set this to true
