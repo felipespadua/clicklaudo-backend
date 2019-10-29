@@ -15,7 +15,7 @@ router.post('/newliver', (req, res, next)=>{
     
     date: req.body.date,
     pacient: req.body.pacient,
-    //owner: req.user._id
+    owner: req.user._id
      
   
   })
