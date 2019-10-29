@@ -11,9 +11,9 @@ const User       = require('../models/user');
 authRoutes.post('/signup', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    const email = req.body.email
+    const name = req.body.name
   
-    if (!username || !password || !email)  {
+    if (!username || !password || !name)  {
       res.status(400).json({ message: 'Provide username and password' });
       return;
     }
@@ -39,8 +39,8 @@ authRoutes.post('/signup', (req, res, next) => {
         const hashPass = bcrypt.hashSync(password, salt);
   
         const aNewUser = new User({
-            username:username,
-            email:email,
+            username,
+            name,
             password: hashPass
         });
   
