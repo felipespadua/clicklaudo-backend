@@ -17,8 +17,7 @@ const allExamsSchema = new Schema({
     required: true,
     enum: ['prostateExams', 'liverExams']
   },
-  pacientId: {type: Schema.Types.ObjectId,ref: 'pacients'},
-  pacientName: String,
+  pacientId: {type: Schema.Types.ObjectId, required: true, ref: 'pacient'},
   examId: Number,
   state:{
     type:String,
