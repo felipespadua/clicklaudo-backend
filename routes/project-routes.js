@@ -91,11 +91,9 @@ router.post('/newprostate', (req, res, next)=>{
 router.get('/allexams', (req, res, next) => {
  
   AllExams.find()
-  
+    .populate('pacients')
     .then(allFound => {
-
       res.json(allFound)
-
 
     })
     .catch(err => {
