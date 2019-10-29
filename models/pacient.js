@@ -3,7 +3,7 @@ const Schema   = mongoose.Schema;
 
 const pacientSchema = new Schema({
   sex: String,
-  name: String,
+  name:  String,
   age: Number,
   phone: Number,
   healthPlan: String,
@@ -11,7 +11,7 @@ const pacientSchema = new Schema({
   weight: Number,
   height: Number,
   bodySurface: Number,
-  exams:{ type: Schema.Types.ObjectId, ref: 'allexams' }
+  exams:[{ type: Schema.Types.ObjectId, ref: 'allexams' }]
 
 
   
