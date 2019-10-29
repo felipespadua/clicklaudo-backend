@@ -15,13 +15,13 @@ router.post('/newliver', (req, res, next)=>{
     
     date: req.body.date,
     pacient: req.body.pacient,
-    owner: req.user._id
+    //owner: req.user._id
      
   
   })
   .then(response =>{
   
-    console.log(response)
+
    AllExams.create({
     exam: response._id,
     onModel: 'liverExams',
@@ -50,7 +50,7 @@ router.post('/newprostate', (req, res, next)=>{
       healthPlan: req.body.healthPlan,
       pacient: req.body.pacient,
       pacientName: req.body.pacientName,
-      owner: req.user._id,
+      //owner: req.user._id,
     
     })
     .then(response =>{
