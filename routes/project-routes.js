@@ -10,12 +10,12 @@ const Pacient = require("../models/pacient")
 
 // POST route => to create a new project
 router.post('/newliver', (req, res, next)=>{
- 
+  const {data,clinica,medico,medicoSolicitante} = req.body;
   LiverExam.create({
-    
-    date: req.body.date,
-    pacient: req.body.pacient,
-    owner: req.user._id
+      data: Date,
+    clinica: String,
+    medico: String,
+     medicoSolicitante: String,
      
   
   })

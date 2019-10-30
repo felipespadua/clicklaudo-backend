@@ -2,17 +2,32 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const liverExamSchema = new Schema({
-    date: Date,
-    doctor: String,
-    doctorRequester: String,
-    clinical: String,
-    homogenio: Boolean,
-    dimensoes: Boolean,
-    esteatotico: Boolean,
-    cisto: Boolean,
-    tamanhoCisto: Number,
+    data: Date,
+    clinica: String,
+    medico: String,
+     medicoSolicitante: String,
+    dimensao: String,
+      homogeneo: Boolean,
+      esteatotico: Boolean,
+      hepatopiaCronica: Boolean,
+      ciscoSimples: Boolean,
+      cistoSimplesMM: Number,
+      ciscoSimplesSit: String,
+      variosCiscos: Boolean,
+      variosCiscosMM: Number,
+      variosCiscosSit: String,
+      noduloSolido: Boolean,
+      noduloSolidoTipo: String,
+      noduloSolidoContorno: String,
+      noduloSolidoHMM: Number,
+      noduloSolidoVMM: Number,
+      noduloSolidoSit: String,
+      calcificacaoGrosseira: Boolean,
+      calcificacaoGrosseiraMM: Number,
+      calcificacaoGrosseiraSit: String,
+     
     pacient:{type: Schema.Types.ObjectId},
-    pacientName:String,
+   
 }, {timestamps: true});
 
 const LiverExam = mongoose.model("liverExams", liverExamSchema);
