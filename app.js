@@ -119,7 +119,6 @@ const speech = require('@google-cloud/speech');
 const speechClient = new speech.SpeechClient(); // Creates a client
 
 
-
 const io = require('socket.io')(server);
 
 
@@ -200,14 +199,50 @@ const request = {
         enableWordTimeOffsets: true,
         maxAlternatives: 3,
         speechContexts: [{
-            phrases: ["c1","c2","C3","C4","homogeneo","homogêneo","esteatotico","esteatótico","calcificação", "calcificação grosseira", "grosseira", "cisco","cisco simples","vários ciscos","varios ciscos","laudo","imperfeição","gpc","BTJ","ATJ"]
+            phrases: ["c1","c2","c3","c4","c5","C3","C4","homogeneo","homogêneo","esteatotico","esteatótico","calcificação", "calcificação grosseira", "grosseira", "cisco","cisco simples","vários ciscos","varios ciscos","laudo","imperfeição","gpc","BTJ","ATJ"]
            }] // add your own speech context for better recognition
     },
     interimResults: true // If you want interim results, set this to true
 };
 
 
+app.use((req, res, next) => {
+  res.status(404);
+  res.render('not-found');
+});
+
+app.use((err, req, res, next) => {
+  // always log the error
+  console.error('ERROR', req.method, req.path, err);
+
+  // only render if the error ocurred before sending the response
+  if (!res.headersSent) {
+    res.status(500);
+    res.render('error');
+  }
+});
+
+
+server.on('error', error => {
+  if (error.syscall !== 'listen') { throw error }
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`Port ${process.env.PORT} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`Port ${process.env.PORT} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
 
 
 
-module.exports = app;
+server.listen(process.env.PORT, () => {
+  console.log(`Listening on http://localhost:${process.env.PORT}`);
+});

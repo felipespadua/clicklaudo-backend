@@ -3,32 +3,40 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "DEBUG=clicklaudo-back:* nodemon ./bin/www",
-    "dev-windows": "nodemon ./bin/www"
+    "start": "node ./app",
+    "dev": "DEBUG=clicklaudo-back:* nodemon ./app",
+    "dev-windows": "nodemon ./app"
   },
   "dependencies": {
     "@google-cloud/speech": "^3.3.2",
+    "awesome-unoconv": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-mongo": "^3.1.0",
     "cookie-parser": "^1.4.3",
-    "ejs": "^2.5.7",
     "cors": "^2.8.5",
+    "docx": "^4.7.1",
+    "docx-pdf": "0.0.1",
     "dotenv": "^6.0.0",
+    "ejs": "^2.5.7",
     "express": "^4.16.3",
     "express-session": "^1.17.0",
+    "fs": "0.0.1-security",
     "hbs": "^4.0.1",
     "ls": "^0.2.1",
     "mongoose": "^5.2.10",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.9.0",
     "node-sass-middleware": "^0.11.0",
-    "path": "^0.12.7",
-    "socket.io": "^2.0.4",
+    "nodemailer": "^6.3.1",
+    "office-to-pdf": "^4.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "serve-favicon": "^2.5.0"
+    "path": "^0.12.7",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^2.0.4",
+    "unoconv": "^0.1.2",
+    "word2pdf": "^1.0.8"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
