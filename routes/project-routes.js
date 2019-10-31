@@ -114,7 +114,7 @@ router.post('/send-email', (req, res, next) => {
           filename: `laudo_${name}.pdf`,
           path: `/public/reports/laudo_${name}.pdf`
       }
-    ]
+    ] 
   })
   .then(info => res.render('message', {email, subject, message, info}))
   .catch(error => console.log(error));
