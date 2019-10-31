@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const router  = express.Router();
-
 const LiverExam = require("../models/liverExam.js")
 const ProstateExam = require("../models/prostateExam")
 const AllExams = require("../models/allExams")
@@ -10,17 +9,21 @@ const Pacient = require("../models/pacient")
 
 // POST route => to create a new project
 router.post('/newliver', (req, res, next)=>{
-  const {data,clinica,medico,medicoSolicitante} = req.body;
+
+ const { clinica,medico,medicoSolicitante,data,pacient} = req.body
+ 
+
   LiverExam.create({
-      data: Date,
-    clinica: String,
-    medico: String,
-     medicoSolicitante: String,
+     data: data,
+    clinica: clinica,
+    medico: medico,
+    medicoSolicitante: medicoSolicitante,
+    pacient: pacient
      
   
   })
   .then(response =>{
-  
+  console.log(response)
 
    AllExams.create({
     exam: response._id,
@@ -74,10 +77,14 @@ router.post('/newprostate', (req, res, next)=>{
   });
 
   router.post('/newpacient', (req, res, next)=>{
+    const {dataDeNasc,nome,idade,telefone,email,convenio}=req.body
     Pacient.create({
-  
-      sex: req.body.sex,
-      name:req.body.name
+      dataDeNasc,
+      nome,
+      idade,
+      telefone,
+      email,
+      convenio
     })
     .then(response => {
       res.json(response);
@@ -91,10 +98,12 @@ router.post('/newprostate', (req, res, next)=>{
 router.get('/allexams', (req, res, next) => {
  
   AllExams.find()
-    .populate('pacient')
+    .populate('pacients')
+    .populate('exam')
     .then(allFound => {
+      
       res.json(allFound)
-
+      
     })
     .catch(err => {
       res.json(err);
@@ -118,6 +127,32 @@ router.get('/oneexam/:id', (req, res, next) => {
    
 });
 
+router.get('/allpacients', (req, res, next) => {
+ 
+  Pacient.find()
+  
+    .then(allFound => {
+      res.json(allFound)
+
+    })
+    .catch(err => {
+      res.json(err);
+    });
+   
+});
+router.get('/onepacient', (req, res, next) => {
+ 
+  Pacient.find({'nome' : req.body.nome})
+    
+    .then(allFound => {
+      res.json(allFound)
+
+    })
+    .catch(err => {
+      res.json(err);
+    });
+   
+});
 
 
 

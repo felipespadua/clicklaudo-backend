@@ -5,8 +5,7 @@ const prostateExamSchema = new Schema({
     data: Date,
     clinica: String,
     medico: String,
-    
-    medicoSolicitante: String,
+     medicoSolicitante: String,
     size1: Number,
     size2: Number,
     size3: Number,
