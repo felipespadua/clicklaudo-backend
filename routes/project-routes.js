@@ -222,7 +222,7 @@ router.post('/send-email', (req, res, next) => {
 router.get('/allexams', (req, res, next) => {
 
   AllExams.find()
-    .populate('pacients')
+    .populate('pacient')
     .populate('exam')
     .then(allFound => {
       
