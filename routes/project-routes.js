@@ -8,11 +8,12 @@ const AllExams = require("../models/allExams")
 const Pacient = require("../models/pacient")
 const Phrases = require("../models/phrases")
 const nodemailer = require('nodemailer');
-
+const path = require('path');
 router.get("/getoneliver/:id",(req, res, next) => {
 
 console.log(req.params.id)
 LiverExam.findById(req.params.id)
+.populate("pacient")
 .then(response => {
   console.log(response)
   res.json(response);
@@ -175,14 +176,18 @@ router.post('/newpacient', (req, res, next) => {
 });
 
 router.post('/generateReport', (req, res, next) => {
-  const { data, fileName, id} = req.body
+  console.log(req.body.data)
   const generateReport = new GenerateReport()
-  generateReport.writeFile(data, fileName)
+  let filename = generateReport.writeFile(req.body.data)
+  
+  res.status(200).json( { filename } );
   
 });
 
 router.post('/send-email', (req, res, next) => {
-  let { email, subject, message, name } = req.body;
+  console.log(req.body)
+  let { filename, data } = req.body;
+  let absolutePath = path.resolve(`./public/reports/${filename}.pdf`)
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -192,18 +197,19 @@ router.post('/send-email', (req, res, next) => {
   });
   transporter.sendMail({
     from: 'laudos@onreport.com',
-    to: email, 
-    subject: subject, 
-    text: message,
-    html: `<b>${message}</b>`,
+    // to: data.pacient.email, 
+    to: data.email,
+    subject: "Laudo OnReport", 
+    text: "Segue laudo em anexo.",
+    html: `<b>Prezado paciente ${data.paciente}, segue laudo em anexo.</b>`,
     attachments: [
       {   
-          filename: `laudo_${name}.pdf`,
-          path: `/public/reports/laudo_${name}.pdf`
+          filename: `${filename}.pdf`,
+          path: absolutePath
       }
     ] 
   })
-  .then(info => res.render('message', {email, subject, message, info}))
+  .then(info => res.status(200).json({ mensagem: "Sucesso"}))
   .catch(error => console.log(error));
 });
 

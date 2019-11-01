@@ -27,7 +27,7 @@ const liverExamSchema = new Schema({
       calcificacaoGrosseira: Boolean,
       calcificacaoGrosseiraMM: Number,
       calcificacaoGrosseiraSit: String,
-    pacient:{type: Schema.Types.ObjectId},
+    pacient:{type: Schema.Types.ObjectId, ref:"pacients"},
    
 }, {timestamps: true});
 
