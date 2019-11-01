@@ -3,20 +3,22 @@ const Schema = mongoose.Schema;
 
 const liverExamSchema = new Schema({
     data: Date,
-    clinica: String,
     medico: String,
-     medicoSolicitante: String,
-    dimensao: String,
+    medicoSolicitante: String,
+        dimensao: String,
       homogeneo: Boolean,
+    
       esteatotico: Boolean,
       hepatopiaCronica: Boolean,
+
       ciscoSimples: Boolean,
       cistoSimplesMM: Number,
       ciscoSimplesSit: String,
+
       variosCiscos: Boolean,
       variosCiscosMM: Number,
       variosCiscosSit: String,
-      noduloSolido: Boolean,
+        noduloSolido: Boolean,
       noduloSolidoTipo: String,
       noduloSolidoContorno: String,
       noduloSolidoHMM: Number,
@@ -25,8 +27,7 @@ const liverExamSchema = new Schema({
       calcificacaoGrosseira: Boolean,
       calcificacaoGrosseiraMM: Number,
       calcificacaoGrosseiraSit: String,
-     
-    pacient:{type: Schema.Types.ObjectId,required: true, ref: 'pacients' },
+    pacient:{type: Schema.Types.ObjectId},
    
 }, {timestamps: true});
 

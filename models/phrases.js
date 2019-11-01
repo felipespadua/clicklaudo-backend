@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const phrasesSchema = new Schema({
-  exam: String,
-  observations: Array,
-  conclusions: Array
-
+  observations: Object,
+  conclusions: Object,
+  exam: String
 });
 
 const Phrases = mongoose.model('phrases', phrasesSchema);

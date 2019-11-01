@@ -1,130 +1,293 @@
 const express = require('express');
 const mongoose = require('mongoose')
+<<<<<<< HEAD
 const router  = express.Router();
+=======
+const router = express.Router();
+const GenerateReport = require("../bin/GenerateReport")
+>>>>>>> development
 const LiverExam = require("../models/liverExam.js")
 const ProstateExam = require("../models/prostateExam")
 const AllExams = require("../models/allExams")
 const Pacient = require("../models/pacient")
+const Phrases = require("../models/phrases")
+const nodemailer = require('nodemailer');
+
+router.get("/getoneliver/:id",(req, res, next) => {
+
+console.log(req.params.id)
+LiverExam.findById(req.params.id)
+.then(response => {
+  console.log(response)
+  res.json(response);
+})
+.catch(err => {
+  res.json(err);
+})
+})
+
+router.post("/getphrases/:examType",(req, res, next) => {
+  const { examType } = req.params
+  Phrases.findOne({ exam: examType})
+  .then(response => {
+    console.log(response)
+    res.json(response);
+  })
+  .catch(err => {
+    res.json(err);
+  })
+})
+
 
 
 // POST route => to create a new project
-router.post('/newliver', (req, res, next)=>{
-
- const { clinica,medico,medicoSolicitante,data,pacient} = req.body
- 
-
+router.post('/newliver', (req, res, next) => {
+const {clinica,medico,medicoSolicitante,data,pacient} = req.body
   LiverExam.create({
-     data: data,
-    clinica: clinica,
-    medico: medico,
-    medicoSolicitante: medicoSolicitante,
-    pacient: pacient
-     
+    clinica,
+    medico,
+    medicoSolicitante,
+    data,
+   pacient,
   
-  })
-  .then(response =>{
-  console.log(response)
+    })
+    .then(responseLiver => {
+    
+      
+      AllExams.create({
+          exam: responseLiver._id,
+          onModel: 'liverExams',
+          pacient: responseLiver.pacient,
+        })
+        .then(response => {
+          console.log(responseLiver)
+          res.json(responseLiver);
+        })
+        .catch(err => {
+          res.json(err);
+        })
 
-   AllExams.create({
-    exam: response._id,
-    onModel: 'liverExams',
-     pacient:response.pacient,
-     }) 
+    })
+
+});
+
+router.put('/newfigadoview/:id', (req, res, next) => {
+  const {dimensao,homogeneo,esteatotico,hepatopiaCronica,ciscoSimples,cistoSimplesMM,ciscoSimplesSit,variosCiscos,variosCiscosMM,variosCiscosSit,noduloSolido,noduloSolidoTipo,noduloSolidoContorno,noduloSolidoHMM,noduloSolidoVMM,noduloSolidoSi,calcificacaoGrosseira,calcificacaoGrosseiraMM,calcificacaoGrosseiraSit} = req.body
+ 
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.status(400).json({
+          message: 'Specified id is not valid'
+        });
+        return;
+      }
+      console.log(req.params.id)
+      LiverExam.findByIdAndUpdate(req.params.id, {
+        dimensao,homogeneo,esteatotico,hepatopiaCronica,ciscoSimples,cistoSimplesMM,ciscoSimplesSit,variosCiscos,variosCiscosMM,variosCiscosSit,noduloSolido,noduloSolidoTipo,noduloSolidoContorno,noduloSolidoHMM,noduloSolidoVMM,noduloSolidoSi,calcificacaoGrosseira,calcificacaoGrosseiraMM,calcificacaoGrosseiraSit
+         })
+        .then((response) => {
+          console.log(response)
+          res.json({
+            response,
+            message: `Project with ${req.params.id} is updated successfully.`
+          });
+        })
+        .catch(err => {
+          res.json(err);
+        })
+   
+  
+  });
+
+  router.put('/newprostataview/:id', (req, res, next) => {
+    const { homogenio,size1,size2,size3,contornos,residuo,residuoML,exameViaTransretal,noduloPeriferica,noduloPerifericaTipo,noduloSize1,noduloSize2,noduloSize3,noduloLocal,biopsia,fragmentos} = req.body
+   
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          res.status(400).json({
+            message: 'Specified id is not valid'
+          });
+          return;
+        }
+        console.log(req.params.id)
+        ProstateExam.findByIdAndUpdate(req.params.id, {
+          homogenio,size1,size2,size3,contornos,residuo,residuoML,exameViaTransretal,noduloPeriferica,noduloPerifericaTipo,noduloSize1,noduloSize2,noduloSize3,noduloLocal,biopsia,fragmentos
+           })
+          .then((response) => {
+            console.log(response)
+            res.json({
+              response,
+              message: `Project with ${req.params.id} is updated successfully.`
+            });
+          })
+          .catch(err => {
+            res.json(err);
+          })
+     
+    
+    });
+
+
+router.post('/newprostate', (req, res, next) => {
+  const {clinica,medico,medicoSolicitante,data,pacient} = req.body
+  ProstateExam.create({
+
+    clinica,
+    medico,
+    medicoSolicitante,
+    data,
+   pacient,
+      //owner: req.user._id,
+
+    })
+    .then(response => {
+      console.log("===>")
+      console.log(response)
+      res.json(response)
+      AllExams.create({
+          exam: response._id,
+          onModel: 'prostateExams',
+          pacient: response.pacient,
+
+
+        })
+        .then(response => {
+          res.json(response)
+        })
+        .catch(err => {
+          res.json(err);
+        })
+    })
+
+});
+
+router.post('/newpacient', (req, res, next) => {
+  const {nome,idade,telefone,email,convenio} = req.body
+  Pacient.create({
+   
+    nome,
+    idade,
+    telefone,
+    email,
+    convenio
+     
+    })
     .then(response => {
       res.json(response);
     })
     .catch(err => {
       res.json(err);
     })
+});
 
-  })
+router.post('/generateReport', (req, res, next) => {
+  const { data, fileName } = req.body
+  const generateReport = new GenerateReport()
+  generateReport.writeFile(data, fileName)
   
 });
 
-
-router.post('/newprostate', (req, res, next)=>{
- 
-  ProstateExam.create({
-      
-      date: req.body.date,
-      doctor: req.body.doctor,
-      doctorRequester: req.body.doctorRequester,
-      clinical: req.body.clinical,
-      healthPlan: req.body.healthPlan,
-      pacient: req.body.pacient,
-      pacientName: req.body.pacientName,
-      //owner: req.user._id,
-    
-    })
-    .then(response =>{
-      
-      console.log(response)
-      AllExams.create({
-        exam: response._id,
-        onModel: 'prostateExams',
-        pacient: response.pacient,
-       
-      
-      })
-      .then(response => {
-        res.json(response);
-      })
-      .catch(err => {
-        res.json(err);
-      })
-    })
-   
+router.post('/send-email', (req, res, next) => {
+  let { email, subject, message, name } = req.body;
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'onreportlaudos@gmail.com',
+      pass: process.env.GMAILPASSWORD
+    }
   });
+  transporter.sendMail({
+    from: 'laudos@onreport.com',
+    to: email, 
+    subject: subject, 
+    text: message,
+    html: `<b>${message}</b>`,
+    attachments: [
+      {   
+          filename: `laudo_${name}.pdf`,
+          path: `/public/reports/laudo_${name}.pdf`
+      }
+    ] 
+  })
+  .then(info => res.render('message', {email, subject, message, info}))
+  .catch(error => console.log(error));
+});
 
-  router.post('/newpacient', (req, res, next)=>{
-    const {dataDeNasc,nome,idade,telefone,email,convenio}=req.body
-    Pacient.create({
-      dataDeNasc,
-      nome,
-      idade,
-      telefone,
-      email,
-      convenio
-    })
-    .then(response => {
-      res.json(response);
-    })
-    .catch(err => {
-      res.json(err);
-    })
-  });
+
+
+
+
 
 
 router.get('/allexams', (req, res, next) => {
- 
+
   AllExams.find()
     .populate('pacients')
     .populate('exam')
     .then(allFound => {
       
       res.json(allFound)
-      
     })
     .catch(err => {
       res.json(err);
     });
-   
+
 });
 
-router.get('/oneexam/:id', (req, res, next) => {
- 
- 
-  AllExams.findById(req.params.id).populate("pacient")
+router.delete('/exam/:id', (req, res, next) => {
+  const { id } = req.params
+  
+  AllExams.findById(id)
+    .populate('pacient')
+    .then(exam => {
+      const examId = exam.id
+      const model = exam.onModel
+      AllExams.findByIdAndDelete(examId)
+        .then(response => {
+          if(model === "liverExams"){
+            LiverExam.findByIdAndDelete(examId)
+              .then(response => console.log("Exame deletado com sucesso"))
+              .catch(err => console.log(err))
+          }else if(model === "prostateExams"){
+            ProstateExam.findByIdAndDelete(examId)
+              .then(response => console.log(response))
+              .catch(err => console.log(err))
+          }
+        })
+    })
+    .catch(err => {
+      res.json(err);
+    });
+
+});
+
+router.get("/newprostataview/:id", (req, res, next) => {
+
+
+  ProstateExam.findById(req.params.id).populate("pacient")
     .then(oneexam => {
-    
-      res.json(oneexam.pacient.sex)
+
+      res.json(oneexam)
 
 
     })
     .catch(err => {
       res.json(err);
     });
-   
+
+});
+router.get("/newfigadoview/:id", (req, res, next) => {
+
+
+  LiverExam.findById(req.params.id).populate("pacient")
+    .then(oneexam => {
+
+      res.json(oneexam)
+
+
+    })
+    .catch(err => {
+      res.json(err);
+    });
+
 });
 
 router.get('/allpacients', (req, res, next) => {
