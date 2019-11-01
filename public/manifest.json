@@ -1,0 +1,29 @@
+{
+  "short_name": "OnReport",
+  "name": "Laudos Online",
+  "icons": [{
+      "src": "./img/pulse.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "./img/pulse.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./img/pulse.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "./img/iconsPWA/pulse-72_x_72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    }
+  ],
+  "start_url": "/login",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+ }
