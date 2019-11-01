@@ -10,25 +10,28 @@ const nodemailer = require('nodemailer');
 
 // POST route => to create a new project
 router.post('/newliver', (req, res, next) => {
-
+const {clinica,medico,medicoSolicitante,data,pacient} = req.body
   LiverExam.create({
-
-      date: req.body.date,
-      pacient: req.body.pacient,
-      owner: req.user._id
-
+    clinica,
+    medico,
+    medicoSolicitante,
+    data,
+   pacient,
+  
+      
 
     })
-    .then(response => {
-
-
+    .then(responseLiver => {
+    
+      
       AllExams.create({
-          exam: response._id,
+          exam: responseLiver._id,
           onModel: 'liverExams',
-          pacient: response.pacient,
+          pacient: responseLiver.pacient,
         })
         .then(response => {
-          res.json(response);
+          console.log(response)
+          res.json(responseLiver);
         })
         .catch(err => {
           res.json(err);
@@ -38,24 +41,77 @@ router.post('/newliver', (req, res, next) => {
 
 });
 
+router.put('/newfigadoview/:id', (req, res, next) => {
+  const {dimensao,homogeneo,esteatotico,hepatopiaCronica,ciscoSimples,cistoSimplesMM,ciscoSimplesSit,variosCiscos,variosCiscosMM,variosCiscosSit,noduloSolido,noduloSolidoTipo,noduloSolidoContorno,noduloSolidoHMM,noduloSolidoVMM,noduloSolidoSi,calcificacaoGrosseira,calcificacaoGrosseiraMM,calcificacaoGrosseiraSit} = req.body
+ 
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.status(400).json({
+          message: 'Specified id is not valid'
+        });
+        return;
+      }
+      console.log(req.params.id)
+      LiverExam.findByIdAndUpdate(req.params.id, {
+        dimensao,homogeneo,esteatotico,hepatopiaCronica,ciscoSimples,cistoSimplesMM,ciscoSimplesSit,variosCiscos,variosCiscosMM,variosCiscosSit,noduloSolido,noduloSolidoTipo,noduloSolidoContorno,noduloSolidoHMM,noduloSolidoVMM,noduloSolidoSi,calcificacaoGrosseira,calcificacaoGrosseiraMM,calcificacaoGrosseiraSit
+         })
+        .then((response) => {
+          console.log(response)
+          res.json({
+            response,
+            message: `Project with ${req.params.id} is updated successfully.`
+          });
+        })
+        .catch(err => {
+          res.json(err);
+        })
+   
+  
+  });
+
+  router.put('/newprostataview/:id', (req, res, next) => {
+    const { homogenio,size1,size2,size3,contornos,residuo,residuoML,exameViaTransretal,noduloPeriferica,noduloPerifericaTipo,noduloSize1,noduloSize2,noduloSize3,noduloLocal,biopsia,fragmentos} = req.body
+   
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          res.status(400).json({
+            message: 'Specified id is not valid'
+          });
+          return;
+        }
+        console.log(req.params.id)
+        ProstateExam.findByIdAndUpdate(req.params.id, {
+          homogenio,size1,size2,size3,contornos,residuo,residuoML,exameViaTransretal,noduloPeriferica,noduloPerifericaTipo,noduloSize1,noduloSize2,noduloSize3,noduloLocal,biopsia,fragmentos
+           })
+          .then((response) => {
+            console.log(response)
+            res.json({
+              response,
+              message: `Project with ${req.params.id} is updated successfully.`
+            });
+          })
+          .catch(err => {
+            res.json(err);
+          })
+     
+    
+    });
+
 
 router.post('/newprostate', (req, res, next) => {
-
+  const {clinica,medico,medicoSolicitante,data,pacient} = req.body
   ProstateExam.create({
 
-      date: req.body.date,
-      doctor: req.body.doctor,
-      doctorRequester: req.body.doctorRequester,
-      clinical: req.body.clinical,
-      healthPlan: req.body.healthPlan,
-      pacient: req.body.pacient,
-      pacientName: req.body.pacientName,
+    clinica,
+    medico,
+    medicoSolicitante,
+    data,
+   pacient,
       //owner: req.user._id,
 
     })
     .then(response => {
-
+      console.log("===>")
       console.log(response)
+      res.json(response)
       AllExams.create({
           exam: response._id,
           onModel: 'prostateExams',
@@ -64,7 +120,7 @@ router.post('/newprostate', (req, res, next) => {
 
         })
         .then(response => {
-          res.json(response);
+          res.json(response)
         })
         .catch(err => {
           res.json(err);
@@ -74,10 +130,15 @@ router.post('/newprostate', (req, res, next) => {
 });
 
 router.post('/newpacient', (req, res, next) => {
+  const {nome,idade,telefone,email,convenio} = req.body
   Pacient.create({
-
-      sex: req.body.sex,
-      name: req.body.name
+   
+    nome,
+    idade,
+    telefone,
+    email,
+    convenio
+     
     })
     .then(response => {
       res.json(response);

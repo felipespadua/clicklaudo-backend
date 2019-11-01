@@ -2,15 +2,12 @@ const mongoose = require("mongoose");
 const Schema   = mongoose.Schema;
 
 const pacientSchema = new Schema({
-  sex: String,
-  name:  String,
-  age: Number,
-  phone: Number,
-  healthPlan: String,
-  email: String,
-  weight: Number,
-  height: Number,
-  bodySurface: Number,
+  dataDeNasc: Date,
+  nome:String,
+  idade:Number,
+  telefone:Number,
+  email:String,
+  convenio: String,
   exams:[{ type: Schema.Types.ObjectId, ref: 'allexams' }]
 
 
