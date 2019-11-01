@@ -175,7 +175,7 @@ router.post('/newpacient', (req, res, next) => {
 });
 
 router.post('/generateReport', (req, res, next) => {
-  const { data, fileName } = req.body
+  const { data, fileName, id} = req.body
   const generateReport = new GenerateReport()
   generateReport.writeFile(data, fileName)
   
