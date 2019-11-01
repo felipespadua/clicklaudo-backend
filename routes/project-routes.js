@@ -175,7 +175,7 @@ router.post('/send-email', (req, res, next) => {
           filename: `laudo_${name}.pdf`,
           path: `/public/reports/laudo_${name}.pdf`
       }
-    ]
+    ] 
   })
   .then(info => res.render('message', {email, subject, message, info}))
   .catch(error => console.log(error));
@@ -190,10 +190,36 @@ router.post('/send-email', (req, res, next) => {
 router.get('/allexams', (req, res, next) => {
 
   AllExams.find()
-    .populate('pacients')
+    .populate('pacient')
     .then(allFound => {
       res.json(allFound)
+    })
+    .catch(err => {
+      res.json(err);
+    });
 
+});
+
+router.delete('/exam/:id', (req, res, next) => {
+  const { id } = req.params
+  
+  AllExams.findById(id)
+    .populate('pacient')
+    .then(exam => {
+      const examId = exam.id
+      const model = exam.onModel
+      AllExams.findByIdAndDelete(examId)
+        .then(response => {
+          if(model === "liverExams"){
+            LiverExam.findByIdAndDelete(examId)
+              .then(response => console.log("Exame deletado com sucesso"))
+              .catch(err => console.log(err))
+          }else if(model === "prostateExams"){
+            ProstateExam.findByIdAndDelete(examId)
+              .then(response => console.log(response))
+              .catch(err => console.log(err))
+          }
+        })
     })
     .catch(err => {
       res.json(err);
