@@ -1,11 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose')
-<<<<<<< HEAD
-const router  = express.Router();
-=======
 const router = express.Router();
 const GenerateReport = require("../bin/GenerateReport")
->>>>>>> development
 const LiverExam = require("../models/liverExam.js")
 const ProstateExam = require("../models/prostateExam")
 const AllExams = require("../models/allExams")
