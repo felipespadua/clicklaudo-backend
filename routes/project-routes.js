@@ -8,6 +8,18 @@ const AllExams = require("../models/allExams")
 const Pacient = require("../models/pacient")
 const nodemailer = require('nodemailer');
 
+router.get("/getoneliver/:id",(req, res, next) => {
+
+console.log(req.params.id)
+LiverExam.findById(req.params.id)
+.then(response => {
+  console.log(response)
+  res.json(response);
+})
+.catch(err => {
+  res.json(err);
+})
+})
 // POST route => to create a new project
 router.post('/newliver', (req, res, next) => {
 const {clinica,medico,medicoSolicitante,data,pacient} = req.body
@@ -18,8 +30,6 @@ const {clinica,medico,medicoSolicitante,data,pacient} = req.body
     data,
    pacient,
   
-      
-
     })
     .then(responseLiver => {
     
@@ -30,7 +40,7 @@ const {clinica,medico,medicoSolicitante,data,pacient} = req.body
           pacient: responseLiver.pacient,
         })
         .then(response => {
-          console.log(response)
+          console.log(responseLiver)
           res.json(responseLiver);
         })
         .catch(err => {
