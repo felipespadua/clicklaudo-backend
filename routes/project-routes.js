@@ -186,6 +186,7 @@ router.post('/send-email', (req, res, next) => {
 
 
 
+
 router.get('/allexams', (req, res, next) => {
 
   AllExams.find()
@@ -200,13 +201,28 @@ router.get('/allexams', (req, res, next) => {
 
 });
 
-router.get('/oneexam/:id', (req, res, next) => {
+router.get("/newprostataview/:id", (req, res, next) => {
 
 
-  AllExams.findById(req.params.id).populate("pacient")
+  ProstateExam.findById(req.params.id).populate("pacient")
     .then(oneexam => {
 
-      res.json(oneexam.pacient.sex)
+      res.json(oneexam)
+
+
+    })
+    .catch(err => {
+      res.json(err);
+    });
+
+});
+router.get("/newfigadoview/:id", (req, res, next) => {
+
+
+  LiverExam.findById(req.params.id).populate("pacient")
+    .then(oneexam => {
+
+      res.json(oneexam)
 
 
     })
