@@ -6,6 +6,7 @@ const LiverExam = require("../models/liverExam.js")
 const ProstateExam = require("../models/prostateExam")
 const AllExams = require("../models/allExams")
 const Pacient = require("../models/pacient")
+const Phrases = require("../models/phrases")
 const nodemailer = require('nodemailer');
 
 router.get("/getoneliver/:id",(req, res, next) => {
@@ -20,6 +21,21 @@ LiverExam.findById(req.params.id)
   res.json(err);
 })
 })
+
+router.post("/getphrases/:examType",(req, res, next) => {
+  const { examType } = req.params
+  Phrases.findOne({ exam: examType})
+  .then(response => {
+    console.log(response)
+    res.json(response);
+  })
+  .catch(err => {
+    res.json(err);
+  })
+})
+
+
+
 // POST route => to create a new project
 router.post('/newliver', (req, res, next) => {
 const {clinica,medico,medicoSolicitante,data,pacient} = req.body
