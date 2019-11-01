@@ -22,20 +22,22 @@ class GenerateReport {
     constructor() {
 
     }
-    writeFile(data, fileName) {
-        fileName = "teste"
-        data = {
+    writeFile(dataExam) {
+    
+        let fileName = `laudo_${dataExam.paciente.replace(/ /g,'')}`
+        let data = {
             header: {
                 img: "teste.png",
-                nomePaciente: "Francisco da Silva Salve",
-                datadeNasc: "22/10/1995",
+                nomePaciente: `${dataExam.paciente}`,
                 clinica: "Clínica do Coração",
-                medico: "Felipe Sekkar de Padua",
+                medico: dataExam.medico,
+                medicoSolicitante: dataExam.medicoSolicitante,  
+                convenio: dataExam.convenio,
 
             },
             body: {
-                observacoes: " DASUDHSU HUASDUHSAUH AFUh UFHUFHUASFAUSFASUFAUHSFUHSAFFSAUFSAF",
-                conclusoes: "SDASDASFSAFDDFWEWFWFWWWFEWGRG"
+                observacoes: dataExam.observacoes,
+                conclusoes: dataExam.conclusoes
             }
 
         }
@@ -46,7 +48,7 @@ class GenerateReport {
 
         const doc = new Document({
             title: 'laudo',
-            description: 'A brief example of using docx',
+          
         });
 
         const image = doc.createImage(fs.readFileSync('Logo.jpg'),300,100)
@@ -60,15 +62,15 @@ class GenerateReport {
             .font('Monospace')
             .bold();
         doc.createParagraph()
-            .createTextRun('Data de Nascimento: ' + header.datadeNasc)
-            .font('Monospace')
-            .bold();
-        doc.createParagraph()
             .createTextRun('Clínica: ' + header.clinica)
             .font('Monospace')
             .bold();
         doc.createParagraph()
             .createTextRun('Medico: ' + header.medico)
+            .font('Monospace')
+            .bold();
+        doc.createParagraph()
+            .createTextRun('Medico Solicitante: ' + header.medicoSolicitante)
             .font('Monospace')
             .bold();
         doc.createParagraph()
@@ -114,16 +116,13 @@ class GenerateReport {
             }
           
         });
-
-
+        let absolutePath = path.resolve(`./public/reports/${fileName}.docx`);
+        return fileName
     }
 
 
 
 }
-// Done! A file  'My First Document.docx' will be in your file system.
-const generateTeste = new GenerateReport()
-generateTeste.writeFile()
 
 
 module.exports = GenerateReport;
